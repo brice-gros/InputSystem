@@ -1987,10 +1987,10 @@ namespace UnityEngine.InputSystem
                             || type.IsGenericType)
                             continue;
                         Debug.Log("Instantiating type: " + type.FullName);
-                        //if (typeof(InputProcessor).IsAssignableFrom(type))
-                        //{
-                        //    InputSystem.RegisterProcessor(type);
-                        //}
+                        if (typeof(InputProcessor).IsAssignableFrom(type))
+                        {
+                            InputSystem.RegisterProcessor(type);
+                        }
                         // test ci
                         //else if (typeof(IInputInteraction).IsAssignableFrom(type))
                         //{
