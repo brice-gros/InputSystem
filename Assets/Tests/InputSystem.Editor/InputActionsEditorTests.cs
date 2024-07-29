@@ -239,7 +239,8 @@ public class InputActionsEditorTests
         // Rename the new action map
         SendText(editor.rootVisualElement, "New Name");
 
-        yield return null;
+        //yield return null;
+        yield return WaitForNotDirty(editor.rootVisualElement);
 
         // Check on the UI side
         actionMapsContainer = editor.rootVisualElement.Q("action-maps-container");
