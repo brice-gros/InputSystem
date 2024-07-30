@@ -73,8 +73,17 @@ namespace UnityEngine.InputSystem.Editor
 
         public void Reset()
         {
+            if(m_IsEditing)
+            {
+                lastSingleClick = 0;
+                delegatesFocus = false;
+
+                renameTextfield.AddToClassList(InputActionsEditorConstants.HiddenStyleClassName);
+                label.RemoveFromClassList(InputActionsEditorConstants.HiddenStyleClassName);
+                s_EditingItem = null;
+                m_IsEditing = false;
+            }
             EditTextFinished = null;
-            m_IsEditing = false;
         }
 
         public void FocusOnRenameTextField()
