@@ -223,6 +223,8 @@ public class InputActionsEditorTests
         Assume.That(actionMapItem, Is.Not.Null);
         Assume.That(actionMapItem.Count, Is.EqualTo(3));
         Assume.That(actionMapItem[1].Q<Label>("name").text, Is.EqualTo("Old Name"));
+        // for the selection the prevent some instabilities with current ui intregration
+        editor.rootVisualElement.Q<ListView>("action-maps-list-view").selectedIndex = 1;
 
         yield return WaitForNotDirty(actionMapsContainer);
         Click(actionMapItem[1]);

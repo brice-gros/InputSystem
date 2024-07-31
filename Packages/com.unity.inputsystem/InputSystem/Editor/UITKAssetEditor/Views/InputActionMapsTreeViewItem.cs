@@ -66,7 +66,6 @@ namespace UnityEngine.InputSystem.Editor
                 lastSingleClick = 0;
                 return;
             }
-            lastSingleClick = Time.time;
             lastSingleClick = now;
             selected = this;
         }
