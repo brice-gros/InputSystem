@@ -184,6 +184,8 @@ public class InputActionsEditorTests
         Assume.That(button, Is.Not.Null);
         Click(button);
 
+        yield return WaitForNotDirty(editor.rootVisualElement);
+
         // Wait for the focus to move out the button(should be on the new action map)
         yield return WaitForFocusToChange(button);
 
