@@ -18,6 +18,8 @@ namespace UnityEngine.InputSystem.Editor
         private const string kRenameTextField = "rename-text-field";
         public event EventCallback<string> EditTextFinished;
 
+        // for testing purposes
+        internal bool IsEditing => m_IsEditing;
         private bool m_IsEditing;
         private static InputActionMapsTreeViewItem s_EditingItem = null;
 

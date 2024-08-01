@@ -160,6 +160,18 @@ public class InputActionsEditorTests
         while (endTime > EditorApplication.timeSinceStartup);
     }
 
+    IEnumerator WaitUntil(Func<bool> action, double timeoutSecs)
+    {
+        var endTime = EditorApplication.timeSinceStartup + timeoutSecs;
+        do
+        {
+            if (action()) yield break;
+            yield return null;
+        }
+        while (endTime > EditorApplication.timeSinceStartup);
+        Assert.That(action, Is.True);
+    }
+
     IEnumerator WaitForNotDirty(VisualElement ve, double timeoutSecs = 5.0)
     {
         var endTime = EditorApplication.timeSinceStartup + timeoutSecs;
@@ -188,14 +200,32 @@ public class InputActionsEditorTests
 
         // Wait for the focus to move out the button(should be on the new action map)
         yield return WaitForFocusToChange(button);
+        var actionMapsContainer = editor.rootVisualElement.Q("action-maps-container");
+        Assume.That(actionMapsContainer, Is.Not.Null);
 
+        yield return WaitUntil(() => { 
+            var actionMapItem = actionMapsContainer.Query<InputActionMapsTreeViewItem>().ToList();
+            if (actionMapItem?.Count == 1 && actionMapItem[0].IsEditing)
+            {
+                return true;
+            }
+            return false;
+        }, 5.0);
         // Rename the new action map
         SendText(editor.rootVisualElement, "New Name");
 
         yield return null;
+        yield return WaitUntil(() => {
+            var actionMapItem = actionMapsContainer.Query<InputActionMapsTreeViewItem>().ToList();
+            if (actionMapItem?.Count == 1 && actionMapItem[0].IsEditing == false)
+            {
+                return true;
+            }
+            return false;
+        }, 5.0);
 
         // Check on the UI side
-        var actionMapsContainer = editor.rootVisualElement.Q("action-maps-container");
+        //var actionMapsContainer = editor.rootVisualElement.Q("action-maps-container");
         Assume.That(actionMapsContainer, Is.Not.Null);
         var actionMapItem = actionMapsContainer.Query<InputActionMapsTreeViewItem>().ToList();
         Assert.That(actionMapItem, Is.Not.Null);
