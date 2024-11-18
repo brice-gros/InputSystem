@@ -221,7 +221,7 @@ namespace UnityEngine.InputSystem.Editor
         {
             var actionMap = Selectors.GetSelectedActionMap(state)?.wrappedProperty;
             var bindingsArray = actionMap?.FindPropertyRelative(nameof(InputActionMap.m_Bindings));
-
+            if (bindingsArray == null) return;
             int newBindingIndex;
             if (state.selectionType == SelectionType.Action)
                 newBindingIndex = Selectors.GetLastBindingIndexForSelectedAction(state);
@@ -243,6 +243,9 @@ namespace UnityEngine.InputSystem.Editor
             // Split buffer into transmissions and then into transmission blocks
             var copiedType = GetCopiedType(copyBufferString);
             int indexOffset = 0;
+            // If the array is empty, make sure we insert at index 0
+            if (arrayToInsertInto.arraySize == 0)
+                indexOffset = -1;
             foreach (var transmission in copyBufferString.Substring(k_CopyPasteMarker.Length + k_TypeMarker[copiedType].Length)
                      .Split(new[] {k_EndOfTransmission}, StringSplitOptions.RemoveEmptyEntries))
             {
